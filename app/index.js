@@ -102,13 +102,15 @@ module.exports = generators.Base.extend({
       this.copy('Gruntfile.js', this.themePath + '/build/Gruntfile.js');
       this.copy('_gitignore', this.themePath + '/.gitignore');
 
-      if (this.sassBootstrap) {
-        this.bowerInstall([ 'sass-bootstrap' ], { save: true });
-      }
-
       this.directory(this.workingDirectory, this.themePath);
-      
+
       rimraf(this.workingDirectory, done);
+    }
+  },
+  install : function () {
+    if (this.sassBootstrap) {
+      process.chdir(this.themePath + '/build');
+      this.bowerInstall([ 'sass-bootstrap' ], { save: true });
     }
   },
   _findAndReplace : function (file){

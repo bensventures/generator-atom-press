@@ -9,22 +9,22 @@ module.exports = function ( grunt )
         options : {
           style : 'expanded'
         },
-        src : ['app/app.scss'],
-        dest : 'app/css/app.css'
+        src : ['../css/sass/main.scss'],
+        dest : '../style.css'
       },
       prod : {
         options : {
           style : 'compressed'
         },
-        src : ['app/app.scss'],
-        dest : 'dist/css/app.css'
+        src : ['../css/app.scss'],
+        dest : '../style.css'
       }
     },
 
     // watch for changes
     watch : {
       scss : {
-        files : ['app/app.scss'],
+        files : ['../css/**/*'],
         tasks : [
           'sass:dev',
           'notify:scss'
@@ -53,25 +53,11 @@ module.exports = function ( grunt )
     requirejs : {
       compile : {
         options : {
-          name : '../bootstrap',
+          name : '../js/init',
           mainConfigFile : 'app/bootstrap.js',
           out : 'dist/<%= pkg.name %>.js',
           include : ['../bower_components/almond/almond.js']
         }
-      }
-    },
-
-    copy : {
-      main : {
-        files : [
-          // includes files within path
-          {
-            expand : true,
-            src : [ '**', '!bower_components/**', '!js/**', '!*.js', '!*.scss'],
-            cwd : 'app/',
-            dest : 'dist/',
-            filter : 'isFile'}
-        ]
       }
     },
 
@@ -98,5 +84,11 @@ module.exports = function ( grunt )
   // Load NPM's via matchdep
   require( 'matchdep' ).filterDev( 'grunt-*' ).forEach( grunt.loadNpmTasks );
 
-  grunt.registerTask( 'build', ['clean:dist', 'copy', 'sass:prod', 'requirejs:compile', 'toggle:dist'] );
+  grunt.registerTask( 'build', [
+    'clean:dist', 
+    'copy', 
+    'sass:prod', 
+    'requirejs:compile', 
+    'toggle:dist'
+  ] );
 };
